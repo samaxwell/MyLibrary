@@ -1,4 +1,4 @@
-package com.industries.seanimus.excel;
+package com.industries.seanimus.books;
 
 import java.io.File;
 import java.io.IOException;
