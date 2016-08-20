@@ -1,4 +1,4 @@
-package com.industries.seanimus.controllers;
+package com.industries.seanimus.people;
 
 import java.util.List;
 
@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.industries.seanimus.people.Person;
-import com.industries.seanimus.query.MyJDBCTemplate;
+import com.industries.seanimus.books.BookDao;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
@@ -23,7 +22,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 @RestController
 public class PeopleController {
 
-	MyJDBCTemplate jdbc = new MyJDBCTemplate();
+	BookDao jdbc = new BookDao();
 
 	@RequestMapping("/people")
 	public HttpEntity<List<Person>> getPeople() {

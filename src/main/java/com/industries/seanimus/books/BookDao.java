@@ -1,4 +1,4 @@
-package com.industries.seanimus.query;
+package com.industries.seanimus.books;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,14 +10,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
-import com.industries.seanimus.books.Book;
-import com.industries.seanimus.books.BookRowMapper;
 import com.industries.seanimus.parser.Parser;
 import com.industries.seanimus.people.Person;
 import com.industries.seanimus.people.PersonRowMapper;
 
 @Component
-public class MyJDBCTemplate {
+public class BookDao {
 
 	private JdbcTemplate jdbcTemplateObject;
 	private Map<String, DriverManagerDataSource> dataSources;

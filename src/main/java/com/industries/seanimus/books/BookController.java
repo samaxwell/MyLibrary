@@ -1,4 +1,4 @@
-package com.industries.seanimus.controllers;
+package com.industries.seanimus.books;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,11 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.industries.seanimus.books.Book;
-import com.industries.seanimus.excel.AllBooksReport;
-import com.industries.seanimus.query.MyJDBCTemplate;
-
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
@@ -34,7 +29,7 @@ import jxl.write.WriteException;
 @RestController
 public class BookController {
 
-	MyJDBCTemplate jdbc = new MyJDBCTemplate();
+	BookDao jdbc = new BookDao();
 
 	@RequestMapping(value = "/books/add", method = RequestMethod.POST)
 	public int addBook(@RequestBody Book book) {
