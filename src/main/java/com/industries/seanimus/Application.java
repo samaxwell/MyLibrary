@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import com.industries.seanimus.books.BookDao;
+import com.industries.seanimus.books.BookDaoImpl;
 
 @EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
 @SpringBootApplication
@@ -18,7 +18,7 @@ public class Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 
-		BookDao jdbcTemplate = new BookDao();
+//		BookDao jdbcTemplate = new BookDao();
 
 		// List<Book> books = jdbcTemplate.getAllBooks();
 		// for (Book b : books){

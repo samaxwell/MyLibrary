@@ -14,8 +14,9 @@ import com.industries.seanimus.parser.Parser;
 import com.industries.seanimus.people.Person;
 import com.industries.seanimus.people.PersonRowMapper;
 
+// Need to implement interface. This becomes BookDaoImpl
 @Component
-public class BookDao {
+public class BookDaoImpl {
 
 	private JdbcTemplate jdbcTemplateObject;
 	private Map<String, DriverManagerDataSource> dataSources;
