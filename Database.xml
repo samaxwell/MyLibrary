@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connections>
+	<connection name="People"
+		connectionString="jdbc:mysql://localhost:3306/People"
+		username="bobdole"
+		password="yoho">
+	</connection>
+
+
+	<connection name="Books"
+		connectionString="jdbc:mysql://localhost:3306/books?useSSL=false"
+		username="seanimus"
+		password="yoho">
+	</connection>
+	
+</connections>
