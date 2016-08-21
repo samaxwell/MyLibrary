@@ -1,9 +1,12 @@
 package com.industries.seanimus.books;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 // Need to implement interface. This becomes BookDaoImpl
@@ -41,5 +44,13 @@ public class BookDaoImpl {
 	public int validateBook(Book book) {
 		return jdbc.query("SELECT * FROM books WHERE isbn_number = ?", new Object[] { book.getIsbnNumber() },
 				new BookRowMapper()).size();
+	}
+}
+
+class BookRowMapper implements RowMapper<Book> {
+	@Override
+	public Book mapRow(ResultSet rs, int arg1) throws SQLException {
+		return new Book(rs.getString("name"), rs.getString("author_name"), rs.getLong("isbn_number"),
+				rs.getString("category"), rs.getBigDecimal("price"));
 	}
 }
