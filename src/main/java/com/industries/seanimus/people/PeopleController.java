@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.industries.seanimus.books.BookDao;
+import com.industries.seanimus.books.BookDaoImpl;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
@@ -22,7 +22,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 @RestController
 public class PeopleController {
 
-	BookDao jdbc = new BookDao();
+	BookDaoImpl jdbc = new BookDaoImpl();
 
 	@RequestMapping("/people")
 	public HttpEntity<List<Person>> getPeople() {
