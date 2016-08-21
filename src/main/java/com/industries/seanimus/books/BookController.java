@@ -1,7 +1,6 @@
 package com.industries.seanimus.books;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpEntity;
@@ -28,29 +27,29 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import jxl.write.WriteException;
 
 @RestController
+@RequestMapping(value = "/books") // Class level mapping. All method mappings are relative
 public class BookController {
 
-//	@Autowired
-	BookDaoImpl dao = new BookDaoImpl();
+	@Autowired
+	BookDaoImpl dao;
 
-	@RequestMapping(value = "/books/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public int addBook(@RequestBody Book book) {
-		validateBook(book);
 
-		return dao.addBook(book.getName(), book.getAuthorName(), book.getIsbnNumber(), book.getCategory(),
-				book.getPrice());
+		validateBook(book);
+		return dao.addBook(book);
 	}
 
-	@RequestMapping(value = "/books/remove/{author}/{title}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/remove/{author}/{title}", method = RequestMethod.DELETE)
 	public int removeBook(@PathVariable String title, @PathVariable String author) {
 
 		return dao.removeBook(title, author);
 	}
 
-	 @RequestMapping(value = "/books/all", method = RequestMethod.GET)
+	 @RequestMapping(value = "/all", method = RequestMethod.GET)
 	 public List<Book> getAllBooks(){
 	
-	 return dao.getAllBooks();
+		 return dao.getAllBooks();
 	 }
 //	@RequestMapping(value = "/books/all", method = RequestMethod.GET)
 //	public List<Resource> getAllBooks() {
@@ -66,24 +65,22 @@ public class BookController {
 //		return resBooks;
 //	}
 
-	@RequestMapping(value = "/books/authors/{author}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping(value = "/authors/{author}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public List<Book> getBooksByAuthor(@PathVariable String author) {
 
-		author = author.replace('-', ' ');
-
-		return dao.getBooksByAuthor(author);
+		return dao.getBooksByAuthor(author.replace('-', ' '));
 	}
 
-	@RequestMapping(value = "/books/authors", method = RequestMethod.GET)
+	@RequestMapping(value = "/authors", method = RequestMethod.GET)
 	public List<String> getAllAuthors() {
-		List<String> authors = new ArrayList<>();
 
-		authors = dao.getAuthors();
-		return authors;
+		return dao.getAuthors();
+
 	}
 
-	@RequestMapping(value = "/books/report/all", method = RequestMethod.GET)
+	// TODO
+	@RequestMapping(value = "/report/all", method = RequestMethod.GET)
 	public HttpEntity<Book> getBookReport() throws WriteException, IOException {
 		List<Book> books = dao.getAllBooks();
 		AllBooksReport abr = new AllBooksReport();
@@ -94,8 +91,7 @@ public class BookController {
 
 	private void validateBook(Book book) {
 		int valid = dao.validateBook(book);
-		if ((valid > 0))
-			throw new BookAlreadyExistsException(book);
+		if ((valid > 0)) throw new BookAlreadyExistsException(book);
 	}
 }
 
