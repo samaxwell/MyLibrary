@@ -7,6 +7,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import jxl.write.WriteException;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/books") // Class level mapping. All method mappings are relative
 public class BookController {
@@ -49,7 +51,8 @@ public class BookController {
 	 @RequestMapping(value = "/all", method = RequestMethod.GET)
 	 public List<Book> getAllBooks(){
 	
-		 return dao.getAllBooks();
+		 List<Book> books = dao.getAllBooks();
+		 return books;
 	 }
 //	@RequestMapping(value = "/books/all", method = RequestMethod.GET)
 //	public List<Resource> getAllBooks() {
