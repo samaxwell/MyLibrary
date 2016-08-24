@@ -64,8 +64,8 @@ public class BookControllerTest {
 	public void setUp() throws Exception {
 		this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
-		this.books.add(new Book("Book1", "Author1", 1234567891234567L, "Fiction", new BigDecimal(5.45)));
-		this.books.add(new Book("Book2", "Author2", 2345678912345678L, "Fiction", new BigDecimal(3.99)));
+//		this.books.add(new Book("Book1", "Author1", 1234567891234567L, "Fiction", new BigDecimal(5.45)));
+//		this.books.add(new Book("Book2", "Author2", 2345678912345678L, "Fiction", new BigDecimal(3.99)));
 	}
 
 

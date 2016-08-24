@@ -51,7 +51,10 @@ public class BookController {
 	 @RequestMapping(value = "/all", method = RequestMethod.GET)
 	 public List<Book> getAllBooks(){
 	
+		 long start = System.nanoTime();
 		 List<Book> books = dao.getAllBooks();
+		 long duration = (System.nanoTime()-start)/1000000000;
+		 System.out.println("Finished in " + duration + " seconds.");
 		 return books;
 	 }
 //	@RequestMapping(value = "/books/all", method = RequestMethod.GET)
