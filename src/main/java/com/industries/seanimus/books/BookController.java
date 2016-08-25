@@ -27,6 +27,9 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import jxl.write.WriteException;
 
+/*
+ * Hateoas: https://opencredo.com/hal-hypermedia-api-spring-hateoas/
+ */
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/books") // Class level mapping. All method mappings are relative
@@ -53,8 +56,6 @@ public class BookController {
 	
 		 long start = System.nanoTime();
 		 List<Book> books = dao.getAllBooks();
-		 long duration = (System.nanoTime()-start)/1000000000;
-		 System.out.println("Finished in " + duration + " seconds.");
 		 return books;
 	 }
 //	@RequestMapping(value = "/books/all", method = RequestMethod.GET)
