@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 
 public class Book {
 
+	// TODO - add publish date
 	private String name;
 	private String authorName;
 	private String category;
@@ -61,7 +62,7 @@ public class Book {
 		if (cover_path != null) {
 			File img;
 			try {
-				img = new File(cover_path);
+				img = new File("src/main/images/" + cover_path);
 				BufferedImage bufferedImage = ImageIO.read(img);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ImageIO.write(bufferedImage, "jpg", baos);
