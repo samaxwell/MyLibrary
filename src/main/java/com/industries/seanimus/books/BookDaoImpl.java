@@ -23,10 +23,10 @@ public class BookDaoImpl {
 				book.getName(), book.getAuthorName(), book.getIsbnNumber(), book.getCategory(), book.getPrice());
 	}
 
-	public int removeBook(String name, String author) {
+	public int removeBook(Book book) {
 
-		return jdbc.update("DELETE FROM books WHERE name = ? AND author_name = ?", name.replace('-', ' '),
-				author.replace('-', ' '));
+		// TODO - verify more fields for delete
+		return jdbc.update("DELETE FROM books WHERE name = ? AND author_name = ?", book.getName(), book.getAuthorName());
 	}
 
 	public List<Book> getAllBooks() {
@@ -44,6 +44,12 @@ public class BookDaoImpl {
 	public int validateBook(Book book) {
 		return jdbc.query("SELECT * FROM books WHERE isbn_number = ?", new Object[] { book.getIsbnNumber() },
 				new BookRowMapper()).size();
+	}
+
+	public List<Book> getBook(Book book) {
+		
+		return jdbc.query("SELECT * FROM books WHERE author_name = ? AND name = ?", new Object[] {book.getAuthorName(), book.getName() },
+				new BookRowMapper());
 	}
 }
 

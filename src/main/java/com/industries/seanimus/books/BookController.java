@@ -27,66 +27,86 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import jxl.write.WriteException;
 
-/*
- * Hateoas: https://opencredo.com/hal-hypermedia-api-spring-hateoas/
- */
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value = "/books") // Class level mapping. All method mappings are relative
+@RequestMapping(value = "/books") 
+
 public class BookController {
 
 	@Autowired
 	BookDaoImpl dao;
 
+	// Does it make sense to search for a book using a book object? Shouldn't the name suffice? Or should we have both?
+	// What about duplicates? 
+	@RequestMapping(value = "/book", method = RequestMethod.POST)
+	public HttpEntity<Book> getBook(@RequestBody Book book) {
+
+		if (validateBook(book)) {
+			return new ResponseEntity<Book>(dao.getBook(book).get(0), HttpStatus.OK);
+		} else
+			throw new BookDoesntExistException(book);
+	}
+
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public int addBook(@RequestBody Book book) {
+	public HttpEntity<Book> addBook(@RequestBody Book book) {
 
-		validateBook(book);
-		return dao.addBook(book);
+		if (validateBook(book))
+			throw new BookAlreadyExistsException(book);
+		else {
+			dao.addBook(book);
+			return new ResponseEntity<Book>(book, HttpStatus.OK);
+		}
 	}
 
-	@RequestMapping(value = "/remove/{author}/{title}", method = RequestMethod.DELETE)
-	public int removeBook(@PathVariable String title, @PathVariable String author) {
+	@RequestMapping(value = "/remove", method = RequestMethod.DELETE)
+	public HttpEntity<Book> removeBook(@RequestBody Book book) {
 
-		return dao.removeBook(title, author);
+		if (validateBook(book)) {
+			dao.removeBook(book);
+			return new ResponseEntity<Book>(book, HttpStatus.OK);
+		} else {
+			throw new BookDoesntExistException(book);
+		}
 	}
 
-	 @RequestMapping(value = "/all", method = RequestMethod.GET)
-	 public List<Book> getAllBooks(){
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public HttpEntity<List<Book>> getAllBooks() {
+
+		return new ResponseEntity<List<Book>>(dao.getAllBooks(), HttpStatus.OK);
+	}
+
+/*	 @RequestMapping(value = "/books/all", method = RequestMethod.GET)
+	 public List<Resource> getAllBooks() {
 	
-		 long start = System.nanoTime();
-		 List<Book> books = dao.getAllBooks();
-		 return books;
+	 List<Book> books = jdbc.getAllBooks();
+	 List<Resource> resBooks = new ArrayList<>();
+	 for (Book book : books) {
+	 Resource<Book> res = new Resource(book);
+	 res.add(linkTo(methodOn(BookController.class).getAllBooks()).withSelfRel());
+	 resBooks.add(res);
 	 }
-//	@RequestMapping(value = "/books/all", method = RequestMethod.GET)
-//	public List<Resource> getAllBooks() {
-//
-//		List<Book> books = jdbc.getAllBooks();
-//		List<Resource> resBooks = new ArrayList<>();
-//		for (Book book : books) {
-//			Resource<Book> res = new Resource(book);
-//			res.add(linkTo(methodOn(BookController.class).getAllBooks()).withSelfRel());
-//			resBooks.add(res);
-//		}
-//
-//		return resBooks;
-//	}
+	
+	 return resBooks;
+	 }
+*/
 
+	// Should we be able to search by both author name and author object?
 	@RequestMapping(value = "/authors/{author}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<Book> getBooksByAuthor(@PathVariable String author) {
+	public HttpEntity<List<Book>> getBooksByAuthor(@PathVariable String author) {
 
-		return dao.getBooksByAuthor(author.replace('-', ' '));
+		return new ResponseEntity<List<Book>>(dao.getBooksByAuthor(author.replace('-', ' ')), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/authors", method = RequestMethod.GET)
-	public List<String> getAllAuthors() {
-
-		return dao.getAuthors();
+	public HttpEntity<List<String>> getAllAuthors() {
+		// SELECT a.name 'Author Name', b.name 'Book Title' FROM authors a,
+		// books b WHERE b.author_name = a.name ORDER BY a.name, b.name;
+		return new ResponseEntity<List<String>>(dao.getAuthors(), HttpStatus.OK);
 
 	}
 
-	// TODO
+	// TODO: return Excel workbook
 	@RequestMapping(value = "/report/all", method = RequestMethod.GET)
 	public HttpEntity<Book> getBookReport() throws WriteException, IOException {
 		List<Book> books = dao.getAllBooks();
@@ -96,16 +116,24 @@ public class BookController {
 		return new ResponseEntity<Book>(HttpStatus.OK);
 	}
 
-	private void validateBook(Book book) {
-		int valid = dao.validateBook(book);
-		if ((valid > 0)) throw new BookAlreadyExistsException(book);
+	private boolean validateBook(Book book) {
+		int count = dao.getBook(book).size();
+		return (count > 0);
 	}
+
 }
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
+@ResponseStatus(HttpStatus.CONFLICT)
 class BookAlreadyExistsException extends RuntimeException {
 
 	public BookAlreadyExistsException(Book book) {
 		super("Entry already exists for: " + book);
+	}
+}
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+class BookDoesntExistException extends RuntimeException {
+	public BookDoesntExistException(Book book) {
+		super("No entry exists for: " + book);
 	}
 }
