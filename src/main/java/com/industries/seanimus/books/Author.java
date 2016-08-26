@@ -14,13 +14,13 @@ public class Author {
 	public Author() {
 	}
 
-	public Author(int id, String name, Date dob, Date dod, StringBuffer bio, String picture) {
+	public Author(int id, String name, Date dob, Date dod, String bio, String picture) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.dob = dob;
 		this.dod = dod;
-		this.bio = bio;
+		this.bio = new StringBuffer(bio);
 		this.picture = picture;
 	}
 
