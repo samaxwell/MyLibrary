@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 // Need to implement interface. This becomes BookDaoImpl
-//@Component
 @Repository
 public class BookDaoImpl {
 
@@ -18,15 +17,12 @@ public class BookDaoImpl {
 	private JdbcTemplate jdbc;
 
 	public int addBook(Book book) {
-
 		return jdbc.update("INSERT INTO books(name, author_name, isbn_number, category, price) VALUES(?, ?, ?, ?, ?)",
 				book.getName(), book.getAuthorName(), book.getIsbnNumber(), book.getCategory(), book.getPrice());
 	}
 
 	public int removeBook(Book book) {
-
-		// TODO - verify more fields for delete
-		return jdbc.update("DELETE FROM books WHERE name = ? AND author_name = ?", book.getName(), book.getAuthorName());
+		return jdbc.update("DELETE FROM books WHERE isbn_number = ?", book.getIsbnNumber());
 	}
 
 	public List<Book> getAllBooks() {
@@ -47,7 +43,6 @@ public class BookDaoImpl {
 	}
 
 	public List<Book> getBook(Book book) {
-		
 		return jdbc.query("SELECT * FROM books WHERE author_name = ? AND name = ?", new Object[] {book.getAuthorName(), book.getName() },
 				new BookRowMapper());
 	}
@@ -57,6 +52,6 @@ class BookRowMapper implements RowMapper<Book> {
 	@Override
 	public Book mapRow(ResultSet rs, int arg1) throws SQLException {
 		return new Book(rs.getString("name"), rs.getString("author_name"), rs.getLong("isbn_number"),
-				rs.getString("category"), rs.getBigDecimal("price"), rs.getString("img_path"));
+				rs.getString("category"), rs.getBigDecimal("price"), rs.getString("cover_name"));
 	}
 }
