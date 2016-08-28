@@ -1,0 +1,11 @@
+.classpath
+.mvn/
+.settings/
+mvnw*
+target/
+Report.xlsx
+.factorypath
+/.apt_generated/
+/src/main/images/
+/src/main/resources/application.properties
+/src/main/java/com/industries/seanimus/people*
