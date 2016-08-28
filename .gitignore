@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 .classpath
+=======
+>>>>>>> develop
 .mvn/
 .settings/
 mvnw*
