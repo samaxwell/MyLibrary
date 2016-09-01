@@ -33,10 +33,6 @@ public class BookDaoImpl {
 		return jdbc.query("SELECT * FROM books WHERE author_name = ?", new Object[] { author }, new BookRowMapper());
 	}
 
-	public List<String> getAuthors() {
-		return jdbc.queryForList("SELECT DISTINCT author_name FROM books ORDER BY author_name", String.class);
-	}
-
 	public int validateBook(Book book) {
 		return jdbc.query("SELECT * FROM books WHERE isbn_number = ?", new Object[] { book.getIsbnNumber() },
 				new BookRowMapper()).size();
@@ -45,6 +41,14 @@ public class BookDaoImpl {
 	public List<Book> getBook(Book book) {
 		return jdbc.query("SELECT * FROM books WHERE author_name = ? AND name = ?", new Object[] {book.getAuthorName(), book.getName() },
 				new BookRowMapper());
+	}
+
+	public List<Book> getBookByName(String name) {
+		return jdbc.query("SELECT * FROM books WHERE name = ?", new Object[] { name }, new BookRowMapper());
+	}
+
+	public int removeBookByName(String name) {
+		return jdbc.update("DELETE FROM books WHERE name = ?", name);
 	}
 }
 

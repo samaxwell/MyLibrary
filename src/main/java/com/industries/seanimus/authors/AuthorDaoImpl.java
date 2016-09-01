@@ -1,4 +1,4 @@
-package com.industries.seanimus.books;
+package com.industries.seanimus.authors;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +17,22 @@ public class AuthorDaoImpl {
 
 	public List<Author> getAllAuthors() {
 		return jdbc.query("SELECT * FROM authors", new AuthorRowMapper());
+	}
+
+	public Author createNewAuthor(Author author) {
+		jdbc.update("INSERT INTO authors(name, dob, dod, bio, picture_name) VALUES(?, ?, ?, ?, ?)", author.getName(),
+				author.getDob(), author.getDod(), author.getBio(), author.getPicture());
+		return getAuthorByName(author.getName());
+	}
+
+	public Author getAuthorByName(String name) {
+		List<Author> author = jdbc.query("Select * FROM authors WHERE name = ?", new Object[] { name },
+				new AuthorRowMapper());
+		return author.get(0);
+	}
+
+	public int removeAuthor(String name) {
+		return jdbc.update("DELETE FROM authors WHERE name = ?", name);
 	}
 
 }
