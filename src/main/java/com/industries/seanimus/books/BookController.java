@@ -42,6 +42,11 @@ public class BookController {
 		return new ResponseEntity<List<Book>>(dao.getAllBooks(), HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
+	public HttpEntity<List<Book>> getBookByName(@PathVariable String name) {
+		return new ResponseEntity<List<Book>>(dao.getBookByName(name.replace('-', ' ')), HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public HttpEntity<Book> addBook(@RequestBody Book book) {
 
@@ -53,15 +58,6 @@ public class BookController {
 		}
 	}
 
-	/*
-	 * Must take into account that several different books may have the same name.
-	 * Therefore we return a list, just in case. 
-	 */
-	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
-	public HttpEntity<List<Book>> getBookByName(@PathVariable String name) {
-		return new ResponseEntity<List<Book>>(dao.getBookByName(name.replace('-', ' ')), HttpStatus.OK);
-	}
-
 	@RequestMapping(value = "/{name}", method = RequestMethod.DELETE)
 	public HttpEntity<String> removeBookByName(@PathVariable String name) {
 		int success = dao.removeBookByName(name.replace('-', ' '));
@@ -71,23 +67,9 @@ public class BookController {
 		else 
 			return new ResponseEntity<String>("No book found by name: " + name, HttpStatus.CONFLICT);
 	}
-	// Does it make sense to search for a book using a book object? Shouldn't the name suffice? Or should we have both?
-	// What about duplicates? 
-	// TODO - remap uri
-	@RequestMapping(value = "/book", method = RequestMethod.POST)
-	public HttpEntity<Book> getBook(@RequestBody Book book) {
 
-		if (validateBook(book)) {
-			return new ResponseEntity<Book>(dao.getBook(book).get(0), HttpStatus.OK);
-		} else
-			throw new BookDoesntExistException(book);
-	}
-
-	
-	// TODO - remap uri
-	@RequestMapping(value = "/remove", method = RequestMethod.DELETE)
-	public HttpEntity<Book> removeBook(@RequestBody Book book) {
-
+	@RequestMapping(value = "", method = RequestMethod.DELETE)
+	public HttpEntity<Book> removeBookByResource(@RequestBody Book book) {
 		if (validateBook(book)) {
 			dao.removeBook(book);
 			return new ResponseEntity<Book>(book, HttpStatus.OK);
@@ -95,41 +77,37 @@ public class BookController {
 			throw new BookDoesntExistException(book);
 		}
 	}
-
 	
+	@RequestMapping(value = "/author/{name}", method = RequestMethod.GET)
+	public HttpEntity<List<Book>> getBooksByAuthorName(@PathVariable String name) {
 
-/*	 @RequestMapping(value = "/books/all", method = RequestMethod.GET)
-	 public List<Resource> getAllBooks() {
-	
-	 List<Book> books = jdbc.getAllBooks();
-	 List<Resource> resBooks = new ArrayList<>();
-	 for (Book book : books) {
-	 Resource<Book> res = new Resource(book);
-	 res.add(linkTo(methodOn(BookController.class).getAllBooks()).withSelfRel());
-	 resBooks.add(res);
-	 }
-	
-	 return resBooks;
-	 }
-*/
-
-	// Should we be able to search by both author name and author object?
-	@RequestMapping(value = "/authors/{author}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public HttpEntity<List<Book>> getBooksByAuthor(@PathVariable String author) {
-
-		return new ResponseEntity<List<Book>>(dao.getBooksByAuthor(author.replace('-', ' ')), HttpStatus.OK);
+		return new ResponseEntity<List<Book>>(dao.getBooksByAuthor(name.replace('-', ' ')), HttpStatus.OK);
 	}
+
+//	 @RequestMapping(value = "/books/all", method = RequestMethod.GET)
+//	 @ResponseBody
+//	 public List<Resource> getAllBooks() {
+//	
+//	 List<Book> books = jdbc.getAllBooks();
+//	 List<Resource> resBooks = new ArrayList<>();
+//	 for (Book book : books) {
+//	 Resource<Book> res = new Resource(book);
+//	 res.add(linkTo(methodOn(BookController.class).getAllBooks()).withSelfRel());
+//	 resBooks.add(res);
+//	 }
+//	
+//	 return resBooks;
+//	}
 
 	// TODO: return Excel workbook
-	@RequestMapping(value = "/report/all", method = RequestMethod.GET)
-	public HttpEntity<Book> getBookReport() throws WriteException, IOException {
-		List<Book> books = dao.getAllBooks();
-		AllBooksReport abr = new AllBooksReport();
-		abr.setOutputFile("Report.xlsx");
-		abr.write();
-		return new ResponseEntity<Book>(HttpStatus.OK);
-	}
+//	@RequestMapping(value = "/report/all", method = RequestMethod.GET)
+//	public HttpEntity<Book> getBookReport() throws WriteException, IOException {
+//		List<Book> books = dao.getAllBooks();
+//		AllBooksReport abr = new AllBooksReport();
+//		abr.setOutputFile("Report.xlsx");
+//		abr.write();
+//		return new ResponseEntity<Book>(HttpStatus.OK);
+//	}
 
 	private boolean validateBook(Book book) {
 		int count = dao.getBook(book).size();

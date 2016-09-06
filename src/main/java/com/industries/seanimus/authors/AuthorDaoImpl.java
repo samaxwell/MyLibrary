@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.industries.seanimus.books.Book;
+
 @Repository
 public class AuthorDaoImpl {
 
@@ -35,6 +37,9 @@ public class AuthorDaoImpl {
 		return jdbc.update("DELETE FROM authors WHERE name = ?", name);
 	}
 
+//	public List<Book> getBooksByAuthor(Author author) {
+//		return jdbc.query("SELECT * FROM books WHERE author_name = ?", new Object[] { author }, new BookRowMapper());
+//	}
 }
 
 class AuthorRowMapper implements RowMapper<Author> {
