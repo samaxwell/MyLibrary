@@ -12,3 +12,4 @@ Report.xlsx
 /src/main/images/
 /src/main/resources/application.properties
 /src/main/java/com/industries/seanimus/people*
+.project
