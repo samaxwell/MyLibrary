@@ -1,4 +1,4 @@
-package com.industries.seanimus.books;
+package com.industries.seanimus.authors;
 
 import java.sql.Date;
 
