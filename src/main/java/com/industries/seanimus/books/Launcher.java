@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration
 @SpringBootApplication
 @Configuration
-@ComponentScan
+@ComponentScan({"com.industries.seanimus.books", "com.industries.seanimus.authors"})
 public class Launcher {
 
 	public static void main(String[] args) {
