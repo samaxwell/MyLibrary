@@ -8,19 +8,25 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class Book {
 
-	
-
-	// TODO - add publish date
+	@Size(min = 3, max = 100, message = "Book title must be between 0 and 100 characters")
+	@NotNull(message = "Book title must not be null")
 	private String name;
+
+	@Size(min = 3, max = 100, message = "Book author's name must be between 3 and 50 characters")
+	@NotNull(message = "Book author's name must not be null")
 	private String authorName;
+
 	private String category;
 
 	private long isbnNumber;
 
 	private BigDecimal price;
+
 	private int publishingDate;
 
 	private String coverPath = "src/main/images/covers/";
@@ -45,24 +51,56 @@ public class Book {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getAuthorName() {
 		return authorName;
 	}
 
-	public long getIsbnNumber() {
-		return isbnNumber;
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
 	}
 
 	public String getCategory() {
 		return category;
 	}
 
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public long getIsbnNumber() {
+		return isbnNumber;
+	}
+
+	public void setIsbnNumber(long isbnNumber) {
+		this.isbnNumber = isbnNumber;
+	}
+
 	public BigDecimal getPrice() {
 		return price;
 	}
 
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
 	public int getPublishingDate() {
 		return publishingDate;
+	}
+
+	public void setPublishingDate(int publishingDate) {
+		this.publishingDate = publishingDate;
+	}
+
+	public String getCoverPath() {
+		return coverPath;
+	}
+
+	public void setCoverPath(String coverPath) {
+		this.coverPath = coverPath;
 	}
 
 	public byte[] getCover() {
@@ -91,6 +129,5 @@ public class Book {
 		return "Book [name=" + name + ", authorName=" + authorName + ", category=" + category + ", isbnNumber="
 				+ isbnNumber + ", price=" + price + ", publishingDate=" + publishingDate + "]";
 	}
-	
 
 }

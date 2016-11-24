@@ -16,6 +16,7 @@ public class AuthorDaoImpl {
 
 	@Autowired
 	private JdbcTemplate jdbc;
+	
 
 	public List<Author> getAllAuthors() {
 		return jdbc.query("SELECT * FROM authors", new AuthorRowMapper());
@@ -28,7 +29,7 @@ public class AuthorDaoImpl {
 	}
 
 	public Author getAuthorByName(String name) {
-		List<Author> author = jdbc.query("Select * FROM authors WHERE name = ?", new Object[] { name },
+		List<Author> author = jdbc.query("Select * FROM authors WHERE name = ?", new Object[] { name.replace('-', ' ') },
 				new AuthorRowMapper());
 		return author.get(0);
 	}
@@ -37,15 +38,23 @@ public class AuthorDaoImpl {
 		return jdbc.update("DELETE FROM authors WHERE name = ?", name);
 	}
 
-//	public List<Book> getBooksByAuthor(Author author) {
-//		return jdbc.query("SELECT * FROM books WHERE author_name = ?", new Object[] { author }, new BookRowMapper());
-//	}
+	// public List<Book> getBooksByAuthor(Author author) {
+	// return jdbc.query("SELECT * FROM books WHERE author_name = ?", new
+	// Object[] { author }, new BookRowMapper());
+	// }
 }
 
 class AuthorRowMapper implements RowMapper<Author> {
 	@Override
 	public Author mapRow(ResultSet rs, int arg1) throws SQLException {
-		return new Author(rs.getInt("id"), rs.getString("name"), rs.getDate("dob"), rs.getDate("dod"),
-				rs.getString("bio"), rs.getString("picture_name"));
+		Author author = new Author();
+		author.setBio(rs.getString("bio"));
+		author.setDob(rs.getDate("dob"));
+		author.setDod(rs.getDate("dod"));
+		author.setId(rs.getInt("id"));
+		author.setName(rs.getString("name"));
+		author.setPicture(rs.getString("picture_name"));
+
+		return author;
 	}
 }

@@ -1,26 +1,39 @@
 package com.industries.seanimus.authors;
 
-import java.sql.Date;
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 public class Author {
 
 	private int id;
+
+	@Size(min = 3, max = 100, message = "This author needs a name between 3 and 100 characters")
+	@NotNull(message = "This author needs a name")
 	private String name;
+
+	@Past(message = "This author's DOB must be in the past")
+	@NotNull(message = "This author needs a date of birth")
 	private Date dob;
+
+	@Past(message = "This author's DOD must be in the past")
 	private Date dod;
-	private StringBuffer bio;
+
+	@Size(min = 0, max = 1000, message = "This author's bio cannot exceed 1000 characters")
+	private String bio;
 	private String picture;
 
 	public Author() {
 	}
 
 	public Author(int id, String name, Date dob, Date dod, String bio, String picture) {
-		super();
 		this.id = id;
 		this.name = name;
 		this.dob = dob;
 		this.dod = dod;
-		this.bio = new StringBuffer(bio);
+		this.bio = bio;
 		this.picture = picture;
 	}
 
@@ -56,11 +69,11 @@ public class Author {
 		this.dod = dod;
 	}
 
-	public StringBuffer getBio() {
+	public String getBio() {
 		return bio;
 	}
 
-	public void setBio(StringBuffer bio) {
+	public void setBio(String bio) {
 		this.bio = bio;
 	}
 

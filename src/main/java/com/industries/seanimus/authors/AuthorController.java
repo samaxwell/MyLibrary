@@ -18,35 +18,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/v1/authors") 
 
-//TODO - what if authors exist without books. Or books without authors?
 public class AuthorController {
 
+	
 	@Autowired
-	AuthorDaoImpl dao;
+	AuthorService authorService;
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public HttpEntity<List<Author>> getAllAuthors() {
-		return new ResponseEntity<List<Author>>(dao.getAllAuthors(), HttpStatus.OK);
+		return authorService.getAllAuthors();
 	}
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public HttpEntity<Author> createNewAuthor(@RequestBody Author author) {
-		return new ResponseEntity<Author>(dao.createNewAuthor(author), HttpStatus.OK);
+		return authorService.createNewAuthor(author);
 	}
 	
 	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public HttpEntity<Author> getAuthorByName(@PathVariable String name) {
-		return new ResponseEntity<Author>(dao.getAuthorByName(name.replace('-', ' ')), HttpStatus.OK);
+		return authorService.getAuthorByName(name);
 	}
 	
 	@RequestMapping(value = "/{name}", method = RequestMethod.DELETE)
 	public HttpEntity<String> deleteAuthor(@PathVariable String name) {
-		int success = dao.removeAuthor(name.replace('-', ' '));
-		if (success >= 1) {
-			return new ResponseEntity<String>("", HttpStatus.OK);
-		}
-		else 
-			return new ResponseEntity<String>("No author found by that name", HttpStatus.NOT_FOUND);
+		return authorService.removeAuthor(name);
 	}
 	
 }
