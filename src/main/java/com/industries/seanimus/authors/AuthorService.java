@@ -19,7 +19,7 @@ public class AuthorService {
 	}
 
 	public ResponseEntity<Author> createNewAuthor(Author author) {
-		return new ResponseEntity<Author>(authorDao.createNewAuthor(author), HttpStatus.OK);
+		return new ResponseEntity<Author>(authorDao.createNewAuthor(author), HttpStatus.CREATED);
 	}
 
 	public HttpEntity<Author> getAuthorByName(String name) {

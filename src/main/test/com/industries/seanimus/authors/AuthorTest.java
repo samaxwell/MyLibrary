@@ -4,10 +4,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
-import javax.validation.Validation;
-import javax.validation.ValidatorFactory;
-import javax.validation.Validator;
 import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.junit.Assert;
 import org.junit.Before;

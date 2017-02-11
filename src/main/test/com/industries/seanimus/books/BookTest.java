@@ -3,10 +3,10 @@ package com.industries.seanimus.books;
 import java.math.BigDecimal;
 import java.util.Set;
 
-import javax.validation.ValidatorFactory;
+import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ConstraintViolation;
+import javax.validation.ValidatorFactory;
 
 import org.junit.Assert;
 import org.junit.Before;
