@@ -11,7 +11,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.core.Relation;
 
+@Relation(collectionRelation = "books")
 public class Book extends ResourceSupport {
 
 	@Size(min = 3, max = 100, message = "Book title must be between 0 and 100 characters")

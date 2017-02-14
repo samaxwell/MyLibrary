@@ -21,12 +21,12 @@ public class BookController {
 	@Autowired
 	BookService bookService;
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET, produces = "application/hal+json")
 	public HttpEntity<List<Book>> getAllBooks() {
 		return bookService.getAllBooks();
 	}
 
-	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{name}", method = RequestMethod.GET, produces = "application/hal+json")
 	public HttpEntity<List<Book>> getBookByName(@PathVariable String name) {
 		return bookService.getBookByName(name);
 	}

@@ -3,7 +3,6 @@ package com.industries.seanimus.books;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +14,18 @@ public class BookService {
 
 	@Autowired
 	BookDaoImpl bookDao;
+	
+	@Autowired
+	BookResourceAssembler assembler;
 
 	public HttpEntity<List<Book>> getAllBooks() {
-
 		List<Book> allBooks = bookDao.getAllBooks();
-
-		BookResourceAssembler bra = new BookResourceAssembler();
-
-		return new ResponseEntity<List<Book>>(bra.toResource(allBooks), HttpStatus.OK);
-//		return new ResponseEntity<List<Book>>(bookDao.getAllBooks(), HttpStatus.OK);
+		return new ResponseEntity<List<Book>>(assembler.toResource(allBooks), HttpStatus.OK);
 	}
 
 	public HttpEntity<List<Book>> getBookByName(String name) {
-		return new ResponseEntity<List<Book>>(bookDao.getBookByName(name.replace('-', ' ')), HttpStatus.OK);
+		List<Book> books = bookDao.getBookByName(name.replace('-',  ' '));
+		return new ResponseEntity<List<Book>>(assembler.toResource(books), HttpStatus.OK);
 	}
 
 	public HttpEntity<Book> addBook(Book book) {
@@ -35,7 +33,7 @@ public class BookService {
 			throw new BookAlreadyExistsException(book);
 		} else {
 			bookDao.addBook(book);
-			return new ResponseEntity<Book>(book, HttpStatus.CREATED);
+			return new ResponseEntity<Book>(assembler.toResource(book), HttpStatus.CREATED);
 		}
 	}
 
@@ -68,9 +66,8 @@ public class BookService {
 		return (count > 0);
 	}
 
-
-
 }
+
 @ResponseStatus(HttpStatus.CONFLICT)
 class BookAlreadyExistsException extends RuntimeException {
 
