@@ -3,6 +3,7 @@ package com.industries.seanimus.books;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,13 @@ public class BookService {
 	BookDaoImpl bookDao;
 
 	public HttpEntity<List<Book>> getAllBooks() {
-		return new ResponseEntity<List<Book>>(bookDao.getAllBooks(), HttpStatus.OK);
+
+		List<Book> allBooks = bookDao.getAllBooks();
+
+		BookResourceAssembler bra = new BookResourceAssembler();
+
+		return new ResponseEntity<List<Book>>(bra.toResource(allBooks), HttpStatus.OK);
+//		return new ResponseEntity<List<Book>>(bookDao.getAllBooks(), HttpStatus.OK);
 	}
 
 	public HttpEntity<List<Book>> getBookByName(String name) {

@@ -10,7 +10,9 @@ import javax.imageio.ImageIO;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class Book {
+import org.springframework.hateoas.ResourceSupport;
+
+public class Book extends ResourceSupport {
 
 	@Size(min = 3, max = 100, message = "Book title must be between 0 and 100 characters")
 	@NotNull(message = "Book title must not be null")
